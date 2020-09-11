@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private _authService: AuthService,
     private formBuilder: FormBuilder,
     private _router: Router) {
-    if (this._authService.user) this._router.navigate(['/']);
+    this._authService.singOut();
   }
 
   ngOnInit(): void {

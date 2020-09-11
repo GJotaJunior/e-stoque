@@ -4,26 +4,34 @@ import { Router } from '@angular/router';
 import { FirebaseFirestore } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
+import * as firebase from 'firebase';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private _user: firebase.User;
+  private _user: Observable<firebase.User>;
+  private _userDetails: firebase.User = null;
 
   constructor(private _fireAuth: AngularFireAuth,
     private _snackBar: MatSnackBar,
     private _router: Router) {
-    this._user = JSON.parse(sessionStorage.getItem('user'));
+
+    this._user = _fireAuth.authState;
+
+    this._user.subscribe(
+      (user) => {
+        (user) ? this._userDetails = user : this._userDetails = null
+      }
+    );
   }
 
-  signIn(email: string, password: string) {
+  async signIn(email: string, password: string) {
     return this._fireAuth.auth
       .signInWithEmailAndPassword(email, password)
       .then(userCredential => {
-        this._user = userCredential.user;
-        sessionStorage.setItem('user', JSON.stringify(this._user));
         console.log(`Success SignIn! ${userCredential.user.displayName}`)
         this._router.navigate(['/']);
       })
@@ -50,7 +58,6 @@ export class AuthService {
 
   singOut() {
     this._user = null;
-    sessionStorage.removeItem('user');
     return this._fireAuth.auth
       .signOut()
       .then(() => {
@@ -61,11 +68,11 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    return (this._user != null);
+    return (this._userDetails != null);
   }
 
   get user(): firebase.User {
-    return this._user;
+    return this._userDetails;
   }
 
 }
