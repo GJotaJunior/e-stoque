@@ -14,10 +14,12 @@ import { RegisterComponent } from './register/register.component';
 import { MatSelectModule } from '@angular/material/select';
 import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
 import { MatIconModule } from '@angular/material/icon';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [LoginComponent, RegisterComponent, ForgotPasswordComponent, ResetPasswordComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,

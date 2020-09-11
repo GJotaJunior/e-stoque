@@ -31,10 +31,11 @@ export class AuthService {
   async signIn(email: string, password: string) {
     return this._fireAuth.auth
       .signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        console.log(`Success SignIn! ${userCredential.user.displayName}`)
-        this._router.navigate(['/']);
-      })
+      .then(
+        (userCredential) => {
+          console.log(`Success SignIn! ${userCredential.user.displayName}`)
+          this._router.navigate(['/']);
+        })
       .catch(err => this._snackBar.open(err.message, 'X', { duration: 5000 }));
   }
 
@@ -43,27 +44,62 @@ export class AuthService {
 
     await this._fireAuth.auth
       .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        uid = userCredential.user.uid;
-        userCredential.user.updateProfile({
-          displayName: name,
+      .then(
+        (userCredential) => {
+          uid = userCredential.user.uid;
+          userCredential.user.updateProfile({
+            displayName: name,
+          })
+          console.log(`Success SignUp!`);
+          this._snackBar.open('Cadastro realizado com sucesso!', 'X', { duration: 3000 })
         })
-        console.log(`Success SignUp!`);
-        this._snackBar.open('Cadastro realizado com sucesso!', 'X', { duration: 3000 })
-      })
       .catch(err => this._snackBar.open(err.message, 'X', { duration: 5000 }));
 
     return uid;
   }
 
-  singOut() {
+  async singOut() {
     this._user = null;
     return this._fireAuth.auth
       .signOut()
-      .then(() => {
-        console.log(`Success SignOut!`);
-        this._router.navigate(['login']);
-      })
+      .then(
+        () => {
+          console.log(`Success SignOut!`);
+          this._router.navigate(['login']);
+        })
+      .catch(err => this._snackBar.open(err.message, 'X', { duration: 5000 }));
+  }
+
+  async changePassword(newPassword: string) {
+    return this._fireAuth.auth.currentUser.updatePassword(newPassword)
+      .then(
+        () => {
+          this._snackBar.open('Senha alterada com sucesso', '', { duration: 4000 });
+          this._router.navigate(['login'])
+        }
+      )
+      .catch(err => this._snackBar.open(err.message, 'X', { duration: 5000 }));
+  }
+
+  async sendPasswordResetEmail(email: string) {
+    return this._fireAuth.auth.sendPasswordResetEmail(email)
+      .then(
+        () => {
+          this._snackBar.open('E-mail enviado com sucesso, entre no seu e-mail para recuperar a senha', '', { duration: 4000 });
+          this._router.navigate(['login'])
+        }
+      )
+      .catch(err => this._snackBar.open(err.message, 'X', { duration: 5000 }));
+  }
+
+  async resetPassword(code: string, newPassword: string) {
+    return this._fireAuth.auth.confirmPasswordReset(code, newPassword)
+      .then(
+        () => {
+          this._snackBar.open('Senha alterada com sucesso', '', { duration: 4000 });
+          this._router.navigate(['login']);
+        }
+      )
       .catch(err => this._snackBar.open(err.message, 'X', { duration: 5000 }));
   }
 

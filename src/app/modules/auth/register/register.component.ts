@@ -63,23 +63,20 @@ export class RegisterComponent implements OnInit {
   }
 
   async register() {
-    if (this.registerForm.controls['password'].value != this.registerForm.controls['confirmPassword'].value) {
-      this._snackBar.open('As senhas precisam ser iguais', 'X', { duration: 3000 })
+    let name: string = this.registerForm.controls['name'].value;
+    let email: string = this.registerForm.controls['email'].value;
+    let password: string = this.registerForm.controls['password'].value;
+    let confirmPassword: string = this.registerForm.controls['confirmPassword'].value;
+    let isAdmin: boolean = (this.registerForm.controls['isAdmin'].value == 'true');
+
+    if (password != confirmPassword) {
+      this._snackBar.open('As senhas precisam ser iguais', 'X', { duration: 4000 })
     }
     else {
-      let isAdmin: boolean = (this.registerForm.controls['isAdmin'].value == 'true');
-      await this._authService.signUp(
-        this.registerForm.controls['email'].value,
-        this.registerForm.controls['password'].value,
-        this.registerForm.controls['name'].value
-      ).then(
-        (uid) => this._firestore.collection('users').doc(uid).set({ isAdmin })
+      await this._authService.signUp(email, password, name).then(
+        (uid) => this._firestore.collection('users').doc(uid).set({ name, email, isAdmin, isActive: true })
       );
     }
-  }
-
-  logout() {
-    this._authService.singOut();
   }
 
   getEmailFieldError(): string {
