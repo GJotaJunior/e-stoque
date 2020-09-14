@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private _authService: AuthService,
     private formBuilder: FormBuilder,
     private _router: Router) {
-    this._authService.singOut();
+    if (this._authService.user) this._router.navigate(['']);
   }
 
   ngOnInit(): void {
@@ -41,8 +41,12 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  login(): void {
-    this._authService.signIn(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value);
+  async login() {
+    let email: string = this.loginForm.controls['email'].value;
+    let password: string = this.loginForm.controls['password'].value;
+
+    await this._authService.signIn(email, password)
+      .then(() => this._router.navigate(['']));
   }
 
   getEmailFieldError(): string {
