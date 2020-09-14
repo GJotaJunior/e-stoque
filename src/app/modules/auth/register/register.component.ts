@@ -54,10 +54,7 @@ export class RegisterComponent implements OnInit {
         ]
       ],
       isAdmin: [
-        '',
-        [
-          Validators.required
-        ]
+        false
       ]
     })
   }
@@ -67,14 +64,19 @@ export class RegisterComponent implements OnInit {
     let email: string = this.registerForm.controls['email'].value;
     let password: string = this.registerForm.controls['password'].value;
     let confirmPassword: string = this.registerForm.controls['confirmPassword'].value;
-    let isAdmin: boolean = (this.registerForm.controls['isAdmin'].value == 'true');
+    let isAdmin: boolean = this.registerForm.controls['isAdmin'].value;
+    let registerBy: string = this._authService.userDetails.uid;
 
     if (password != confirmPassword) {
       this._snackBar.open('As senhas precisam ser iguais', 'X', { duration: 4000 })
     }
     else {
       await this._authService.signUp(email, password, name).then(
-        (uid) => this._firestore.collection('users').doc(uid).set({ name, email, isAdmin, isActive: true })
+        (uid) => this._firestore.collection('users').doc(uid).set({
+          name, email, isAdmin, registerBy, isActive: true
+        })
+      ).then(
+        () => this.registerForm.reset()
       );
     }
   }

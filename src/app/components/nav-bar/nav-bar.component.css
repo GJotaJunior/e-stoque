@@ -1,0 +1,17 @@
+.example-spacer {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+#toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+#logo:hover {
+  cursor: pointer;
+}
+
+mat-drawer-container {
+  height: 100%;
+}

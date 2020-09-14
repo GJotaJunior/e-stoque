@@ -15,7 +15,7 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input matInput placeholder="email@exemplo.com" type="text" formControlName="email" required>
+                        <input matInput placeholder="email@exemplo.com" type="email" formControlName="email" required>
                         <mat-error *ngIf="registerForm.controls['email'].invalid">{{getEmailFieldError()}}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
@@ -41,16 +41,11 @@
                             {{getConfirmPasswordFieldError()}}
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Cadastrar admin?</mat-label>
-                        <mat-select required formControlName="isAdmin">
-                            <mat-option value="false">
-                                Não
-                            </mat-option>
-                            <mat-option value="true">
-                                Sim
-                            </mat-option>
-                        </mat-select>
+                    <mat-form-field appearance="fine">
+                        <mat-slide-toggle formControlName="isAdmin">
+                            Cadastrar como admin?
+                        </mat-slide-toggle>
+                        <textarea matInput hidden></textarea>
                         <mat-error *ngIf="registerForm.controls['isAdmin'].invalid">
                             {{getIsAdminFieldError()}}
                         </mat-error>
