@@ -1,3 +1,4 @@
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,10 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { RegisterComponent } from './register/register.component';
 import { MatSelectModule } from '@angular/material/select';
-import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
 import { MatIconModule } from '@angular/material/icon';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+
 
 
 @NgModule({
@@ -32,12 +33,11 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatButtonModule,
     MatSnackBarModule,
     MatSelectModule,
-    AngularFirestoreModule,
-    MatIconModule
+    MatIconModule,
+    MatSlideToggleModule,
   ],
   providers: [
-    FormBuilder,
-    AngularFirestore
+    FormBuilder
   ]
 })
 export class AuthModule { }

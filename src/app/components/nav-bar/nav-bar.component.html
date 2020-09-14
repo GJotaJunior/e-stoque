@@ -1,0 +1,51 @@
+<mat-drawer-container class="example-container" hasBackdrop="true" autosize>
+    <mat-drawer #drawer mode="over">
+        <mat-toolbar color="primary">
+            <button mat-icon-button class="example-icon" *ngIf="isLoggedIn == true" (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span id="logo" [routerLink]="['']">E-Stoque</span>
+        </mat-toolbar>
+        <mat-nav-list>
+            <mat-list-item [routerLink]="['']">
+                <mat-icon>playlist_add</mat-icon>
+                <span>Lançamentos</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item [routerLink]="['']">
+                <mat-icon>format_list_numbered</mat-icon>
+                <span>Produtos</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item [routerLink]="['']">
+                <mat-icon>group</mat-icon>
+                <span>Usuários</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item [routerLink]="['']">
+                <mat-icon>show_chart</mat-icon>
+                <span>Relatórios</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Sair</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+        <mat-toolbar id="toolbar" color="primary">
+            <button mat-icon-button class="example-icon" *ngIf="isLoggedIn == true" (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span id="logo" [routerLink]="['']">E-Stoque</span>
+            <span class="example-spacer"></span>
+            <button mat-icon-button class="example-icon" *ngIf="isLoggedIn == true" (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+            </button>
+        </mat-toolbar>
+        <router-outlet>
+        </router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

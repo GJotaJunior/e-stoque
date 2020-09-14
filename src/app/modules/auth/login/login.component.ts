@@ -17,9 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private _authService: AuthService,
     private formBuilder: FormBuilder,
-    private _router: Router) {
-    if (this._authService.user) this._router.navigate(['']);
-  }
+    private _router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -46,7 +44,7 @@ export class LoginComponent implements OnInit {
     let password: string = this.loginForm.controls['password'].value;
 
     await this._authService.signIn(email, password)
-      .then(() => this._router.navigate(['']));
+      .finally(() => this._router.navigate(['home']));
   }
 
   getEmailFieldError(): string {
