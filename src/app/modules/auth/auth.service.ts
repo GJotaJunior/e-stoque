@@ -19,6 +19,7 @@ export class AuthService {
     private _router: Router) {
 
     this._user = _fireAuth.authState;
+
     _fireAuth.authState.subscribe(
       user => this._userDetails = user
     );
@@ -40,7 +41,7 @@ export class AuthService {
     setTimeout(() => {
       this._firestore.collection('users').doc(uid).valueChanges().subscribe(
         (userDoc) => {
-          if (!userDoc['isActive']) {
+          if (!userDoc['isActive'] && userDoc != undefined) {
             this.singOut();
             this._snackBar.open('A conta foi desativado por um administrador', 'X', { duration: 3000 })
           }
