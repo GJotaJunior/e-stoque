@@ -17,16 +17,16 @@
                 <span>Produtos</span>
             </mat-list-item>
             <mat-divider></mat-divider>
-            <mat-list-item [routerLink]="['']">
+            <mat-list-item [routerLink]="['/users']" *ngIf="isAdmin">
                 <mat-icon>group</mat-icon>
                 <span>Usuários</span>
             </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item [routerLink]="['']">
+            <mat-divider *ngIf="isAdmin"></mat-divider>
+            <mat-list-item [routerLink]="['']" *ngIf="isAdmin">
                 <mat-icon>show_chart</mat-icon>
                 <span>Relatórios</span>
             </mat-list-item>
-            <mat-divider></mat-divider>
+            <mat-divider *ngIf="isAdmin"></mat-divider>
             <mat-list-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
                 <span>Sair</span>
@@ -45,7 +45,7 @@
                 <mat-icon>exit_to_app</mat-icon>
             </button>
         </mat-toolbar>
-        <router-outlet>
+        <router-outlet class="p-top-8vh">
         </router-outlet>
     </mat-drawer-content>
 </mat-drawer-container>

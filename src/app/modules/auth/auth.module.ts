@@ -16,11 +16,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UsersListComponent } from './users-list/users-list.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { UsersComponent } from './users/users.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, ForgotPasswordComponent, ResetPasswordComponent],
+  declarations: [
+    LoginComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    UsersListComponent,
+    UsersComponent
+  ],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -35,6 +47,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     MatSelectModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule
   ],
   providers: [
     FormBuilder
