@@ -69,15 +69,27 @@ export class UsersListComponent implements OnInit {
 
   changeIsActive(user: IUser) {
     let inactivatedDate = (user.isActive) ? new Date() : null
+    let isActive = !user.isActive;
+    let isAdmin = false
 
-    this._db.doc(user.uid).update({ isActive: !user.isActive, inactivatedDate, isAdmin: false }).then(
-      () => window.location.reload()
+    this._db.doc(user.uid).update({ isActive, inactivatedDate, isAdmin }).then(
+      () => {
+        user.isActive = isActive;
+        user.inactivatedDate = inactivatedDate;
+        user.isAdmin = false;
+      }
     );
   }
 
   changeIsAdmin(user: IUser) {
-    this._db.doc(user.uid).update({ isAdmin: !user.isAdmin }).then(
-      () => window.location.reload()
+    let isAdmin = (!user.isAdmin)
+    let isActive = true;
+
+    this._db.doc(user.uid).update({ isAdmin, isActive }).then(
+      () => {
+        user.isAdmin = !user.isAdmin;
+        user.isActive = isActive;
+      }
     );
   }
 
