@@ -7,6 +7,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { TransactionComponent } from './transactions/transaction.component';
+import { ProductsComponent } from './products/products.component';
 
 const toHome = () => redirectLoggedInTo(['home']);
 
@@ -44,6 +46,16 @@ const routes: Routes = [
     path: 'users',
     canActivate: [AngularFireAuthGuard],
     component: UsersComponent
+  },
+  {
+    path: 'transaction',
+    canActivate: [AngularFireAuthGuard],
+    component: TransactionComponent
+  },
+  {
+    path: 'products',
+    canActivate: [AngularFireAuthGuard],
+    component: ProductsComponent
   }
 ];
 

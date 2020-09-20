@@ -21,7 +21,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { UsersComponent } from './users/users.component';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { ProductsComponent } from './products/products.component'
+import { TransactionComponent } from './transactions/transaction.component'
 
 
 @NgModule({
@@ -31,7 +32,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     UsersListComponent,
-    UsersComponent
+    UsersComponent,
+    TransactionComponent,
+    ProductsComponent
   ],
   imports: [
     CommonModule,

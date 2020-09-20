@@ -1,0 +1,44 @@
+<div class="component" fxLayout="row" fxLayoutAlign="space-around start">
+    <div id="register" fxLayout="row" fxLayoutAlign="center center" fxFlex="80" fxFlex.gt-sm="40">
+        <mat-card fxLayout="column" fxLayoutAlign="center center">
+            <mat-card-header>
+                <mat-card-title>
+                    Cadastro de Lançamentos
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <form [formGroup]="registerForm" (ngSubmit)="registerTransaction()" fxLayout="column" fxLayoutAlign="center">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Quantidade</mat-label>
+                        <input matInput placeholder="15" type="number" formControlName="amount" required>
+                        <mat-error *ngIf="registerForm.controls['amount'].invalid">{{getAmountFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Preço</mat-label>
+                        <input matInput placeholder="R$ 9,99" type="text" formControlName="price" required>
+                        <mat-error *ngIf="registerForm.controls['price'].invalid">{{getPriceFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tipo de Lançamento</mat-label>
+                        <input matInput type="text" formControlName="typeEnum" required>
+                        <mat-error *ngIf="registerForm.controls['typeEnum'].invalid">{{getTypeEnumFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Data de Lançamento</mat-label>
+                        <input matInput type="date"
+                            formControlName="dateHour" required>
+                        <mat-error *ngIf="registerForm.controls['dateHour'].invalid">{{getDateHourFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutAlign="space-around center">
+                        <button type="reset" mat-raised-button>
+                            Limpar
+                        </button>
+                        <button type="submit" [disabled]="!registerForm.valid" mat-raised-button color="primary">
+                            Cadastrar
+                        </button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
