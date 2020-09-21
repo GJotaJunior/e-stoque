@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { validateBasis } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-products',
@@ -15,10 +12,8 @@ export class ProductsComponent implements OnInit {
   registerForm: FormGroup;
 
   constructor(
-    private _authService: AuthService,
     private _firestore: AngularFirestore,
     private formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
