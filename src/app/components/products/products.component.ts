@@ -27,22 +27,19 @@ export class ProductsComponent implements OnInit {
       value: [
         '',
         [
-          Validators.required,
-          Validators.pattern['R\$ ?\d{1,3},\d{2}']
+          Validators.required
         ]
       ],
       priceBar: [
         '',
         [
-          Validators.required,
-          Validators.pattern['R\$ ?\d{1,3},\d{2}']
+          Validators.required
         ]
       ],
       priceDelivery: [
         '',
         [
-          Validators.required,
-          Validators.pattern['R\$ ?\d{1,3},\d{2}']
+          Validators.required
         ]
       ]
     })

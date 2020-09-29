@@ -18,16 +18,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { TransactionComponent } from './components/transactions/transaction.component';
 import { ProductsComponent } from './components/products/products.component';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { TransactionComponent } from './components/transactions/transaction.component';
+import { TransactionInComponent } from './components/transaction-in/transaction-in.component';
+import { TransactionOutComponent } from './components/transaction-out/transaction-out.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatRadioModule } from '@angular/material/radio';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -35,7 +40,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
     AppComponent,
     NavBarComponent,
     TransactionComponent,
-    ProductsComponent
+    ProductsComponent,
+    TransactionInComponent,
+    TransactionOutComponent
   ],
   imports: [
     AppRoutingModule,
@@ -63,6 +70,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MatSidenavModule,
     MatListModule,
     MatDividerModule,
+    MatTabsModule,
+    MatRadioModule,
+    MatAutocompleteModule,
     AngularFireModule.initializeApp(environment.firebase),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
