@@ -37,11 +37,10 @@ export class ProductsListComponent implements OnInit {
             priceDelivery: product['priceDelivery']
           });
         });
+        this.dataSource = new MatTableDataSource(this.products);
+        this.dataSource.sort = this.sort;
       }
     );
-
-    this.dataSource = new MatTableDataSource(this.products);
-    this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
