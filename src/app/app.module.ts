@@ -33,6 +33,8 @@ import { TransactionOutComponent } from './components/transaction-out/transactio
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ProductsListComponent } from './components/products-list/products-list.component';
+import { ProductsRegisterComponent } from './components/products-register/products-register.component';
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     TransactionComponent,
     ProductsComponent,
     TransactionInComponent,
-    TransactionOutComponent
+    TransactionOutComponent,
+    ProductsListComponent,
+    ProductsRegisterComponent
   ],
   imports: [
     AppRoutingModule,

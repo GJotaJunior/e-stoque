@@ -1,0 +1,38 @@
+<div class="component" fxLayout="row" fxLayoutAlign="space-around start">
+    <div id="register" fxLayout="row" fxLayoutAlign="center center" fxFlex="80" fxFlex.gt-sm="40">
+        <mat-card fxLayout="column" fxLayoutAlign="center center">
+            <mat-card-header>
+                <mat-card-title>
+                    Cadastro de Produtos
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <form [formGroup]="productForm" (ngSubmit)="registerProduct()" fxLayout="column" fxLayoutAlign="center">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nome do produto</mat-label>
+                        <input matInput placeholder="Ex.: Skol lata" type="text" formControlName="name" required />
+                        <mat-error *ngIf="productForm.controls['name'].invalid">{{getNameFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Preço no balcão</mat-label>
+                        <input matInput placeholder="Ex.: 9,99" type="text" formControlName="priceBar" required />
+                        <mat-error *ngIf="productForm.controls['priceBar'].invalid">{{getPriceBarFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Preço no delivery</mat-label>
+                        <input matInput placeholder="Ex.: 9,99" type="text" formControlName="priceDelivery" required />
+                        <mat-error *ngIf="productForm.controls['priceDelivery'].invalid">{{getPriceDeliveryFieldError()}}</mat-error>
+                    </mat-form-field>
+                    <div fxLayout="row" fxLayoutAlign="space-around center">
+                        <button type="reset" mat-raised-button>
+                            Limpar
+                        </button>
+                        <button type="submit" [disabled]="!productForm.valid" mat-raised-button color="primary">
+                            Cadastrar
+                        </button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

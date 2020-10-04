@@ -1,0 +1,16 @@
+th.mat-sort-header-sorted {
+    color: black;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .component {
+    height: 100%;
+  }
+  
+  .table {
+    height: 75vh;
+    overflow: auto;
+  }
