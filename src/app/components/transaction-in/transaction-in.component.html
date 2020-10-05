@@ -9,14 +9,14 @@
             <mat-card-content fxLayout="column" fxLayoutAlign="center">
                 <form [formGroup]="transactionForm" (ngSubmit)="registerTransaction()" fxLayout="column" fxLayoutAlign="center">
                     <mat-form-field>
-                        <input type="text" matInput placeholder="Produto" formControlName="productId" required
+                        <input type="text" matInput placeholder="Produto" formControlName="productName" required
                             [matAutocomplete]="autoGroup" />
                         <mat-autocomplete #autoGroup="matAutocomplete">
-                            <mat-option *ngFor="let element of products" [value]="element.productId">
+                            <mat-option *ngFor="let element of products" [value]="element.name">
                                 {{element.name}}
                             </mat-option>
                         </mat-autocomplete>
-                        <mat-error *ngIf="transactionForm.controls['productId'].invalid">{{getProductIdFieldError()}}</mat-error>
+                        <mat-error *ngIf="transactionForm.controls['productName'].invalid">{{getProductNameFieldError()}}</mat-error>
                     </mat-form-field> 
                     <mat-form-field appearance="outline">
                         <mat-label>Quantidade</mat-label>

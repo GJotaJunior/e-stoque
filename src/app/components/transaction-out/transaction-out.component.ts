@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../modules/auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { firestore } from 'firebase'
+import { firestore } from 'firebase';
+import { IProduct } from '../../shared/interfaces/iproduct';
+
 @Component({
   selector: 'app-transaction-out',
   templateUrl: './transaction-out.component.html',
@@ -12,7 +14,7 @@ export class TransactionOutComponent implements OnInit {
 
   transactionForm: FormGroup;
 
-  products = []
+  products:IProduct[] = [];
   _db: AngularFirestoreCollection<unknown>;
 
   constructor(private _authService: AuthService,
@@ -24,7 +26,7 @@ export class TransactionOutComponent implements OnInit {
       (data) => {
         data.forEach(product => {
           this.products.push({
-            productId: product['uid'],
+            uid: product['uid'],
             name: product['name']
           });
         });
@@ -36,7 +38,7 @@ export class TransactionOutComponent implements OnInit {
 
   ngOnInit(): void {
     this.transactionForm = this._formBuilder.group({
-      productId: [
+      productName: [
         '',
         [
           Validators.required
@@ -58,7 +60,8 @@ export class TransactionOutComponent implements OnInit {
   }
 
   async registerTransaction() {
-    let productId: string = this.transactionForm.controls['productId'].value;
+    debugger
+    let productId: string = this.checkProduct(this.transactionForm.controls['productName'].value);
     let amount: string = this.transactionForm.controls['amount'].value;
     let typeEnum: string = this.transactionForm.controls['typeEnum'].value;
     let dateHour: firestore.Timestamp = firestore.Timestamp.now();
@@ -75,10 +78,10 @@ export class TransactionOutComponent implements OnInit {
       )
   }
 
-  getProductIdFieldError(): string {
-    let productId = this.transactionForm.controls['productId'];
+  getProductNameFieldError(): string {
+    let productName = this.transactionForm.controls['productName'];
 
-    if (productId.hasError('required'))
+    if (productName.hasError('required'))
       return 'O campo é de preenchimento obrigatório'
   }
 
@@ -87,5 +90,12 @@ export class TransactionOutComponent implements OnInit {
 
     if (amount.hasError('required'))
       return 'O campo é de preenchimento obrigatório'
+  }
+
+  checkProduct(name: string): string {
+    for (let i = 0; i < this.products.length; i++) {
+      if(name == this.products[i].name)
+        return this.products[i].uid;
+    }
   }
 }
