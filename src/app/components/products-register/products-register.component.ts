@@ -20,22 +20,24 @@ export class ProductsRegisterComponent implements OnInit {
       name: [
         '',
         [
-          Validators.required
+          Validators.required,
         ]
       ],
       priceBar: [
         '',
         [
-          Validators.required
+          Validators.required,
+          Validators.pattern('^(\\d{1,3},\\d{2})$')
         ]
       ],
       priceDelivery: [
         '',
         [
-          Validators.required
+          Validators.required,
+          Validators.pattern('^(\\d{1,3},\\d{2})$')
         ]
       ]
-    })
+    });
   }
 
   async registerProduct() {
@@ -56,20 +58,22 @@ export class ProductsRegisterComponent implements OnInit {
     let name = this.productForm.controls['name'];
 
     if (name.hasError('required'))
-      return 'O campo é de preenchimento obrigatório'
+      return 'O campo é de preenchimento obrigatório';
   }
 
   getPriceBarFieldError(): string {
     let priceBar = this.productForm.controls['priceBar'];
 
-    if (priceBar.hasError('required'))
-      return 'O campo é de preenchimento obrigatório'
+    return (priceBar.hasError('pattern'))
+      ? 'O campo deve ser preenchido com um valor válido'
+      : 'O campo é de preenchimento obrigatório';
   }
 
   getPriceDeliveryFieldError(): string {
     let priceDelivery = this.productForm.controls['priceDelivery'];
 
-    if (priceDelivery.hasError('required'))
-      return 'O campo é de preenchimento obrigatório'
+    return (priceDelivery.hasError('pattern'))
+      ? 'O campo deve ser preenchido com um valor válido'
+      : 'O campo é de preenchimento obrigatório';
   }
 }

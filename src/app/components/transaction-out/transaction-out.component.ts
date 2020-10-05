@@ -15,6 +15,7 @@ export class TransactionOutComponent implements OnInit {
   transactionForm: FormGroup;
 
   products:IProduct[] = [];
+  uids: string[] = [];
   _db: AngularFirestoreCollection<unknown>;
 
   constructor(private _authService: AuthService,
@@ -25,10 +26,15 @@ export class TransactionOutComponent implements OnInit {
     this._db.valueChanges({ idField: 'uid' }).subscribe(
       (data) => {
         data.forEach(product => {
-          this.products.push({
-            uid: product['uid'],
-            name: product['name']
-          });
+          if(!this.uids.includes(product['uid'])){
+            this.products.push({
+              uid: product['uid'],
+              name: product['name'],
+              priceBar: product['priceBar'],
+              priceDelivery: product['priceDelivery']
+            });
+            this.uids.push(product['uid']);
+          }
         });
       }
     );

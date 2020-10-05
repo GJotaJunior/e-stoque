@@ -14,7 +14,8 @@ export class TransactionInComponent implements OnInit {
   transactionForm: FormGroup;
   date: Date;
 
-  products: IProduct[];
+  products: IProduct[] = [];
+  uids: string[] = [];
   _db: AngularFirestoreCollection<unknown>;
 
   constructor(private _firestore: AngularFirestore,
@@ -25,10 +26,15 @@ export class TransactionInComponent implements OnInit {
     this._db.valueChanges({ idField: 'uid' }).subscribe(
       (data) => {
         data.forEach(product => {
-          this.products.push({
-            uid: product['uid'],
-            name: product['name']
-          });
+          if(!this.uids.includes(product['uid'])){
+            this.products.push({
+              uid: product['uid'],
+              name: product['name'],
+              priceBar: product['priceBar'],
+              priceDelivery: product['priceDelivery']
+            });
+            this.uids.push(product['uid']);
+          }
         });
       }
     );
@@ -76,7 +82,8 @@ export class TransactionInComponent implements OnInit {
       price: [
         '',
         [
-          Validators.required
+          Validators.required,
+          Validators.pattern('^(\\d{1,3},\\d{2})$')
         ]
       ]
     })
@@ -99,8 +106,9 @@ export class TransactionInComponent implements OnInit {
   getPriceFieldError(): string {
     let price = this.transactionForm.controls['price'];
 
-    if (price.hasError('required'))
-      return 'O campo é de preenchimento obrigatório'
+    return (price.hasError('pattern'))
+      ? 'O campo deve ser preenchido com um vallor válido'
+      : 'O campo é de preenchimento obrigatório';
   }
 
   checkProduct(name: string): string {

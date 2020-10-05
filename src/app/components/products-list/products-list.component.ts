@@ -18,7 +18,8 @@ export class ProductsListComponent implements OnInit {
     'priceDelivery'
   ];
 
-  products = [];
+  products: IProduct[] = [];
+  uids: string[] = [];
   dataSource: MatTableDataSource<IProduct> = new MatTableDataSource([]);
   _db: AngularFirestoreCollection<unknown>;
 
@@ -30,12 +31,15 @@ export class ProductsListComponent implements OnInit {
     this._db.valueChanges({ idField: 'uid' }).subscribe(
       (data) => {
         data.forEach(product => {
-          this.products.push({
-            productId: product['uid'],
-            name: product['name'],
-            priceBar: product['priceBar'],
-            priceDelivery: product['priceDelivery']
-          });
+          if(!this.uids.includes(product['uid'])){
+            this.products.push({
+              uid: product['uid'],
+              name: product['name'],
+              priceBar: product['priceBar'],
+              priceDelivery: product['priceDelivery']
+            });
+            this.uids.push(product['uid']);
+          }
         });
         this.dataSource = new MatTableDataSource(this.products);
         this.dataSource.sort = this.sort;
