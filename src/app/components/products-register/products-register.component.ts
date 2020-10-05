@@ -27,14 +27,14 @@ export class ProductsRegisterComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('^(\\d{1,3},\\d{2})$')
+          Validators.pattern('^(\\d{1,}(,|.)\\d{2})$')
         ]
       ],
       priceDelivery: [
         '',
         [
           Validators.required,
-          Validators.pattern('^(\\d{1,3},\\d{2})$')
+          Validators.pattern('^(\\d{1,}(,|.)\\d{2})$')
         ]
       ]
     });
@@ -42,8 +42,8 @@ export class ProductsRegisterComponent implements OnInit {
 
   async registerProduct() {
     let name: string = this.productForm.controls['name'].value;
-    let priceBar: string = this.productForm.controls['priceBar'].value;
-    let priceDelivery: string = this.productForm.controls['priceDelivery'].value;
+    let priceBar: string = (this.productForm.controls['priceBar'].value).replace('.', ',');
+    let priceDelivery: string = (this.productForm.controls['priceDelivery'].value).replace('.', ',');
 
     this._firestore.collection('products').add({
       name, priceBar, priceDelivery

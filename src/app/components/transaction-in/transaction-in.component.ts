@@ -83,7 +83,7 @@ export class TransactionInComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('^(\\d{1,3},\\d{2})$')
+          Validators.pattern('^(\\d{1,}(,|.)\\d{2})$')
         ]
       ]
     })
