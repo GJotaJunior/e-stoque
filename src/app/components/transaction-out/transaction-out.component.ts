@@ -4,6 +4,8 @@ import { AuthService } from '../../modules/auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { firestore } from 'firebase';
 import { IProduct } from '../../shared/interfaces/iproduct';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-out',
@@ -17,6 +19,7 @@ export class TransactionOutComponent implements OnInit {
   products:IProduct[] = [];
   uids: string[] = [];
   _db: AngularFirestoreCollection<unknown>;
+  filteredOptions: Observable<IProduct[]>;
 
   constructor(private _authService: AuthService,
     private _firestore: AngularFirestore,
@@ -38,8 +41,6 @@ export class TransactionOutComponent implements OnInit {
         });
       }
     );
-
-    console.log(this.products)
   }
 
   ngOnInit(): void {
@@ -53,7 +54,8 @@ export class TransactionOutComponent implements OnInit {
       amount: [
         '',
         [
-          Validators.required
+          Validators.required,
+          Validators.pattern('^\\d{1,}$')
         ]
       ],
       typeEnum: [
@@ -62,7 +64,14 @@ export class TransactionOutComponent implements OnInit {
           Validators.required
         ]
       ]
-    })
+    });
+
+    this.filteredOptions = this.transactionForm.controls['productName'].valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.products.slice())
+      );
   }
 
   async registerTransaction() {
@@ -94,8 +103,9 @@ export class TransactionOutComponent implements OnInit {
   getAmountFieldError(): string {
     let amount = this.transactionForm.controls['amount'];
 
-    if (amount.hasError('required'))
-      return 'O campo é de preenchimento obrigatório'
+    return (amount.hasError('pattern'))
+      ? 'O campo deve ser preenchido com um valor inteiro'
+      : 'O campo é de preenchimento obrigatório';
   }
 
   checkProduct(name: string): string {
@@ -103,5 +113,15 @@ export class TransactionOutComponent implements OnInit {
       if(name == this.products[i].name)
         return this.products[i].uid;
     }
+  }
+
+  displayFn(product: IProduct): string {
+    return product && product.name ? product.name : '';
+  }
+
+  private _filter(name: string): IProduct[] {
+    const filterValue = name.toLowerCase();
+
+    return this.products.filter(product => product.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }

@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { firestore } from 'firebase';
 import { IProduct } from '../../shared/interfaces/iproduct';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-transaction-in',
@@ -17,6 +20,7 @@ export class TransactionInComponent implements OnInit {
   products: IProduct[] = [];
   uids: string[] = [];
   _db: AngularFirestoreCollection<unknown>;
+  filteredOptions: Observable<IProduct[]>;
 
   constructor(private _firestore: AngularFirestore,
     private _formBuilder: FormBuilder,) {
@@ -42,6 +46,13 @@ export class TransactionInComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+
+    this.filteredOptions = this.transactionForm.controls['productName'].valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.products.slice())
+      );
   }
 
   async registerTransaction() {
@@ -76,7 +87,8 @@ export class TransactionInComponent implements OnInit {
       amount: [
         '',
         [
-          Validators.required
+          Validators.required,
+          Validators.pattern('^\\d{1,}$')
         ]
       ],
       price: [
@@ -99,15 +111,16 @@ export class TransactionInComponent implements OnInit {
   getAmountFieldError(): string {
     let amount = this.transactionForm.controls['amount'];
 
-    if (amount.hasError('required'))
-      return 'O campo é de preenchimento obrigatório'
+    return (amount.hasError('pattern'))
+      ? 'O campo deve ser preenchido com um valor inteiro'
+      : 'O campo é de preenchimento obrigatório';
   }
 
   getPriceFieldError(): string {
     let price = this.transactionForm.controls['price'];
-
+    
     return (price.hasError('pattern'))
-      ? 'O campo deve ser preenchido com um vallor válido'
+      ? 'O campo deve ser preenchido com um valor válido'
       : 'O campo é de preenchimento obrigatório';
   }
 
@@ -116,5 +129,15 @@ export class TransactionInComponent implements OnInit {
       if(name == this.products[i].name)
         return this.products[i].uid;
     }
+  }
+
+  displayFn(product: IProduct): string {
+    return product && product.name ? product.name : '';
+  }
+
+  private _filter(name: string): IProduct[] {
+    const filterValue = name.toLowerCase();
+
+    return this.products.filter(product => product.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }

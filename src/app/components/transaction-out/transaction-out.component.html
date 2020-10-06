@@ -12,9 +12,9 @@
                     <mat-form-field>
                         <input matInput type="text" placeholder="Produto" formControlName="productName" required
                             [matAutocomplete]="autoGroup" />
-                        <mat-autocomplete #autoGroup="matAutocomplete">
-                            <mat-option *ngFor="let element of products" [value]='element.name'>
-                                {{element.name}}
+                        <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let product of filteredOptions | async" [value]='product.name'>
+                                {{product.name}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="transactionForm.controls['productName'].invalid">{{getProductNameFieldError()}}</mat-error>
