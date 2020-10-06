@@ -10,8 +10,8 @@
                 <form [formGroup]="transactionForm" (ngSubmit)="registerTransaction()" fxLayout="column" fxLayoutAlign="center">
                     <mat-form-field>
                         <input type="text" matInput placeholder="Produto" formControlName="productName" required
-                            [matAutocomplete]="autoGroup" />
-                        <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn">
+                            [matAutocomplete]="autoGroup" (blur)="checkSelectedProduct()"/>
+                        <mat-autocomplete autoActiveFirstOption #autoGroup="matAutocomplete" (optionSelected)="productClick($event)">
                             <mat-option *ngFor="let product of filteredOptions | async" [value]="product.name">
                                 {{product.name}}
                             </mat-option>

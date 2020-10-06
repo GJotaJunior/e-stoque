@@ -4,8 +4,8 @@ import { AuthService } from '../../modules/auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { firestore } from 'firebase';
 import { IProduct } from '../../shared/interfaces/iproduct';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-out',
@@ -15,6 +15,7 @@ import {map, startWith} from 'rxjs/operators';
 export class TransactionOutComponent implements OnInit {
 
   transactionForm: FormGroup;
+  selectedProduct: string = '';
 
   products:IProduct[] = [];
   uids: string[] = [];
@@ -103,9 +104,13 @@ export class TransactionOutComponent implements OnInit {
   getAmountFieldError(): string {
     let amount = this.transactionForm.controls['amount'];
 
-    return (amount.hasError('pattern'))
-      ? 'O campo deve ser preenchido com um valor inteiro'
-      : 'O campo é de preenchimento obrigatório';
+    if(amount.hasError('pattern'))
+      return 'O campo deve ser preenchido com um valor inteiro'
+
+    if (amount.hasError('required')) {
+      amount.setValue('')
+      return 'O campo é de preenchimento obrigatório'
+    }
   }
 
   checkProduct(name: string): string {
@@ -115,13 +120,20 @@ export class TransactionOutComponent implements OnInit {
     }
   }
 
-  displayFn(product: IProduct): string {
-    return product && product.name ? product.name : '';
+  productClick(event: any) {
+    this.selectedProduct = event.option.value;
   }
-
+  
+  checkSelectedProduct() {
+    if (!this.selectedProduct || this.selectedProduct !== this.transactionForm.controls['productName'].value) {
+      this.transactionForm.controls['productName'].setValue('');
+      this.selectedProduct = '';
+    }
+  }
+  
   private _filter(name: string): IProduct[] {
     const filterValue = name.toLowerCase();
 
-    return this.products.filter(product => product.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.products.filter(product => product.name.toLowerCase().includes(filterValue));
   }
 }

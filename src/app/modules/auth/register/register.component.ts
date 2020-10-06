@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.minLength(5)
+          Validators.pattern("^[A-zÀ-ÿ']+\\s([A-zÀ-ÿ']\\s?)*[A-zÀ-ÿ']+$")
         ]
       ],
       isAdmin: [
@@ -112,6 +112,9 @@ export class RegisterComponent implements OnInit {
 
   getNameFieldError(): string {
     let name = this.registerForm.controls['name'];
+
+    if(name.hasError('pattern'))
+      return 'Por favor, insira seu nome completo'
 
     return (name.hasError('required'))
       ? 'O campo é de preenchimento obrigatório'
