@@ -1,24 +1,25 @@
-<div class="component" fxLayout="row" fxLayoutAlign="space-around start">
+<div class="component" fxLayout="row" fxLayoutAlign="space-evenly center">
     <div id="register" fxLayout="row" fxLayoutAlign="center center" fxFlex="80" fxFlex.gt-sm="40">
         <mat-card fxLayout="column" fxLayoutAlign="center center">
             <mat-card-header>
                 <mat-card-title>
-                    Cadastro de Lançamentos - Saída
+                    Cadastro de Lançamentos - Vendas
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content fxLayout="column" fxLayoutAlign="center">
-                <form [formGroup]="transactionForm" (ngSubmit)="registerTransaction()" fxLayout="column"
-                    fxLayoutAlign="center">
+                <form [formGroup]="transactionForm" (ngSubmit)="addInCart()" fxLayout="column" fxLayoutAlign="center">
                     <mat-form-field>
                         <input matInput type="text" placeholder="Produto" formControlName="productName" required
                             [matAutocomplete]="autoGroup" (blur)="checkSelectedProduct()" />
-                        <mat-autocomplete autoActiveFirstOption #autoGroup="matAutocomplete"  (optionSelected)="productClick($event)"> 
+                        <mat-autocomplete autoActiveFirstOption #autoGroup="matAutocomplete"
+                            (optionSelected)="productClick($event)">
                             <mat-option *ngFor="let product of filteredOptions | async" [value]='product.name'>
                                 {{product.name}}
                             </mat-option>
                         </mat-autocomplete>
-                        <mat-error *ngIf="transactionForm.controls['productName'].invalid">{{getProductNameFieldError()}}</mat-error>
-                    </mat-form-field> 
+                        <mat-error *ngIf="transactionForm.controls['productName'].invalid">
+                            {{getProductNameFieldError()}}</mat-error>
+                    </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Quantidade</mat-label>
                         <input matInput placeholder="Ex.: 15" type="number" formControlName="amount" required />
@@ -26,7 +27,8 @@
                         </mat-error>
                     </mat-form-field>
                     <mat-radio-group formControlName="typeEnum" aria-label="Tipo de saída" required>
-                        <mat-radio-button class="with-gap" value="saidaBalcao" [checked]="'checked'">Balcão</mat-radio-button>
+                        <mat-radio-button class="with-gap" value="saidaBalcao" [checked]="'checked'">Balcão
+                        </mat-radio-button>
                         <mat-radio-button class="with-gap" value="saidaDelivery">Delivery</mat-radio-button>
                     </mat-radio-group>
                     <div fxLayout="row" fxLayoutAlign="space-around center">
@@ -34,11 +36,51 @@
                             Limpar
                         </button>
                         <button type="submit" [disabled]="!transactionForm.valid" mat-raised-button color="primary">
-                            Cadastrar
+                            Adicionar ao carrinho
                         </button>
                     </div>
                 </form>
             </mat-card-content>
         </mat-card>
     </div>
+
+    <div class="component" fxLayout="row" fxLayoutAlign="center">
+        <div class="table" fxLayout="row" fxLayoutAlign="center none" fxFlex="100" fxFlex.gt-sm="80">
+            <table mat-table [dataSource]="cart" matSort class="mat-elevation-z8">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome </th>
+                    <td mat-cell *matCellDef="let product"> {{product.productName}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="amount" fxshow="false">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantidade </th>
+                    <td mat-cell *matCellDef="let product"> {{product.amount}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="typeEnum">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Forma de venda </th>
+                    <td mat-cell *matCellDef="let product">
+                        <span *ngIf="product.typeEnum == 'saidaBalcao'">Balcão</span>
+                        <span *ngIf="product.typeEnum == 'saidaDelivery'">Delivery</span>
+                    </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="valueUnit">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Preço(un.)</th>
+                    <td mat-cell *matCellDef="let product">{{product.priceUnit.toFixed(2).toString().replace('.', ',')}}</td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+    
+    <div fxLayout="row cartValue" fxLayoutAlign="center center">
+        <p>Total: <strong>R$ {{valueProducts.toFixed(2).toString().replace('.', ',')}}</strong> </p>
+        <button type="button" mat-raised-button color="primary" (click)="cartRegister()">
+            Finalizar compra
+        </button>
+    </div> 
 </div>
+

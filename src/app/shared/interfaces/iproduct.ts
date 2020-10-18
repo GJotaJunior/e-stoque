@@ -3,4 +3,5 @@ export interface IProduct {
     name: string;
     priceBar?: number;
     priceDelivery?: number;
+    amountStock?: number;
 }

@@ -5,6 +5,7 @@ import { firestore } from 'firebase';
 import { IProduct } from '../../shared/interfaces/iproduct';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-transaction-in',
@@ -17,25 +18,28 @@ export class TransactionInComponent implements OnInit {
   date: Date;
   selectedProduct: string = '';
 
+  minAmountProduct: number = 1;
   products: IProduct[] = [];
   uids: string[] = [];
   _db: AngularFirestoreCollection<unknown>;
   filteredOptions: Observable<IProduct[]>;
 
   constructor(private _firestore: AngularFirestore,
-    private _formBuilder: FormBuilder,) {
+    private _formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar) {
 
     this._db = this._firestore.collection('products', ref => ref.orderBy('name'));
 
     this._db.valueChanges({ idField: 'uid' }).subscribe(
       (data) => {
         data.forEach(product => {
-          if(!this.uids.includes(product['uid'])){
+          if (!this.uids.includes(product['uid'])) {
             this.products.push({
               uid: product['uid'],
               name: product['name'],
               priceBar: product['priceBar'],
-              priceDelivery: product['priceDelivery']
+              priceDelivery: product['priceDelivery'],
+              amountStock: product['amountStock']
             });
             this.uids.push(product['uid']);
           }
@@ -56,11 +60,16 @@ export class TransactionInComponent implements OnInit {
   }
 
   async registerTransaction() {
-    let productId: string = this.checkProduct(this.transactionForm.controls['productName'].value);
-    let amount: string = this.transactionForm.controls['amount'].value;
-    let price: number = this.transactionForm.controls['price'].value;
+    let product = this.checkProduct(this.transactionForm.controls['productName'].value);
+    let productId: string = product.uid;
+    let amount: number = this.transactionForm.controls['amount'].value;
+    let price: number = Number.parseFloat((this.transactionForm.controls['price'].value).replace(',', '.'));
     let typeEnum: string = 'entrada';
     let dateHour: firestore.Timestamp = firestore.Timestamp.now();
+
+    this._firestore.collection('products').doc(productId).update({
+      amountStock: product.amountStock + amount
+    });
 
     this._firestore.collection(`products/${productId}/moves`).add({
       amount, price, typeEnum, dateHour
@@ -74,6 +83,8 @@ export class TransactionInComponent implements OnInit {
           });
         }
       )
+
+    this._snackBar.open('Cadastro de compra realizado com sucesso!', 'X', { duration: 4000 });
   }
 
   buildForm(): void {
@@ -88,7 +99,8 @@ export class TransactionInComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('^\\d{1,}$')
+          Validators.pattern('^\\d{1,}$'),
+          Validators.min(1)
         ]
       ],
       price: [
@@ -111,7 +123,10 @@ export class TransactionInComponent implements OnInit {
   getAmountFieldError(): string {
     let amount = this.transactionForm.controls['amount'];
 
-    if(amount.hasError('pattern'))
+    if (amount.hasError('min'))
+      return 'A quantidade deve ser no mínimo 1'
+
+    if (amount.hasError('pattern'))
       return 'O campo deve ser preenchido com um valor inteiro'
 
     if (amount.hasError('required')) {
@@ -122,23 +137,40 @@ export class TransactionInComponent implements OnInit {
 
   getPriceFieldError(): string {
     let price = this.transactionForm.controls['price'];
-  
+
     return (price.hasError('pattern'))
-      ? 'O campo deve ser preenchido com um valor válido'
+      ? 'O campo deve ser preenchido com um valor válido. Ex.: 9,99'
       : 'O campo é de preenchimento obrigatório';
   }
 
-  checkProduct(name: string): string {
+  // Returns the corresponding product to the selected name
+
+  checkProduct(name: string): IProduct {
     for (let i = 0; i < this.products.length; i++) {
-      if(name == this.products[i].name)
-        return this.products[i].uid;
+      if (name == this.products[i].name)
+        return this.products[i];
     }
   }
+
+  // Checks if the price that will be use in cart is of the Bar or Delivery
+
+  checkPrice(event: any) {
+    let price: string = event.target.value;
+
+    if (event.keyCode === 46 && price.split('.').length === 2 ||
+      event.keyCode === 44 && price.split(',').length === 2)
+      return false
+    else if (event.keyCode == 46 && price.split(',').length === 2 ||
+      event.keyCode == 44 && price.split('.').length === 2)
+      return false
+  }
+
+  // Forces user to select a product
 
   productClick(event: any) {
     this.selectedProduct = event.option.value;
   }
-  
+
   checkSelectedProduct() {
     if (!this.selectedProduct || this.selectedProduct !== this.transactionForm.controls['productName'].value) {
       this.transactionForm.controls['productName'].setValue('');
@@ -146,10 +178,20 @@ export class TransactionInComponent implements OnInit {
     }
   }
 
+  // Filter the options to auto-complete
 
   private _filter(name: string): IProduct[] {
     const filterValue = name.toLowerCase();
 
     return this.products.filter(product => product.name.toLowerCase().includes(filterValue));
+  }
+
+  // Converts the price into float if user has placed an integer
+
+  convertPrice() {
+    let priceVerify: boolean = (this.transactionForm.controls['price'].value).replace(',', '.').includes('.');;
+
+    if (!priceVerify && this.transactionForm.controls['price'].value)
+      this.transactionForm.controls['price'].setValue(this.transactionForm.controls['price'].value + ',00');
   }
 }

@@ -15,7 +15,8 @@ export class ProductsListComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
     'priceBar',
-    'priceDelivery'
+    'priceDelivery',
+    'amountStock'
   ];
 
   products: IProduct[] = [];
@@ -36,7 +37,8 @@ export class ProductsListComponent implements OnInit {
               uid: product['uid'],
               name: product['name'],
               priceBar: product['priceBar'],
-              priceDelivery: product['priceDelivery']
+              priceDelivery: product['priceDelivery'],
+              amountStock: product['amountStock']
             });
             this.uids.push(product['uid']);
           }

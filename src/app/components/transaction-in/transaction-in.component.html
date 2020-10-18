@@ -3,7 +3,7 @@
         <mat-card fxLayout="column" fxLayoutAlign="center center">
             <mat-card-header>
                 <mat-card-title>
-                    Cadastro de Lançamentos - Entrada
+                    Cadastro de Lançamentos - Compras
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content fxLayout="column" fxLayoutAlign="center">
@@ -25,7 +25,7 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Preço de compra</mat-label>
-                        <input matInput placeholder="Ex.: 9,99" type="text" formControlName="price" required />
+                        <input matInput placeholder="Ex.: 9,99" type="text" (keypress)="checkPrice($event)" (blur)="convertPrice()" formControlName="price" required />
                         <mat-error *ngIf="transactionForm.controls['price'].invalid">{{getPriceFieldError()}}</mat-error>
                     </mat-form-field>
                     <div fxLayout="row" fxLayoutAlign="space-around center">
