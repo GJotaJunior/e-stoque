@@ -96,9 +96,13 @@ export class ProductsRegisterComponent implements OnInit {
   // Converts the price into float if user has placed an integer
 
   convertPrice(){
-    let priceVerify: boolean = (this.productForm.controls['price'].value).replace(',', '.').includes('.');;
+    let priceBarVerify: boolean = (this.productForm.controls['priceBar'].value).replace(',', '.').includes('.');
+    let priceDeliveryVerify: boolean = (this.productForm.controls['priceDelivery'].value).replace(',', '.').includes('.');
 
-    if(!priceVerify && this.productForm.controls['price'].value)
-      this.productForm.controls['price'].setValue(this.productForm.controls['price'].value + ',00');
+    if(!priceBarVerify && this.productForm.controls['priceBar'].value)
+      this.productForm.controls['priceBar'].setValue(this.productForm.controls['priceBar'].value + ',00');
+
+    if(!priceDeliveryVerify && this.productForm.controls['priceDelivery'].value)
+      this.productForm.controls['priceDelivery'].setValue(this.productForm.controls['priceDelivery'].value + ',00');
   }
 }
