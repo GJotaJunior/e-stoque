@@ -31,7 +31,7 @@ export class TransactionOutComponent implements OnInit {
   selectedProduct: string = '';
 
   valueProducts: number = 0;
-  products: IProduct[];
+  products: IProduct[] = [];
   _db: AngularFirestoreCollection<unknown>;
   filteredOptions: Observable<IProduct[]>;
   @ViewChild(MatSort) sort: MatSort;
