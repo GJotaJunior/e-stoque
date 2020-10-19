@@ -1,5 +1,6 @@
 <div class="component" fxLayout="row" fxLayoutAlign="space-around center">
-  <div class="table" fxLayout="row" fxLayoutAlign="center none" fxFlex="100" fxFlex.gt-sm="80">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <div class="table" fxLayout="row" fxLayoutAlign="center none" fxFlex="100" fxFlex.gt-sm="80" *ngIf="!isLoading">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>

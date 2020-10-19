@@ -28,6 +28,8 @@ export class UsersListComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
+  isLoading: boolean = true;
+
   private _db: AngularFirestoreCollection<unknown>;
 
   constructor(private _firestore: AngularFirestore,
@@ -63,6 +65,7 @@ export class UsersListComponent implements OnInit {
         });
         this.dataSource = new MatTableDataSource(this.data);
         this.dataSource.sort = this.sort;
+        this.isLoading = false;
       }
     );
   }
