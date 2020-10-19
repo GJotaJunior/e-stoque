@@ -16,6 +16,7 @@ export class NavBarComponent implements OnInit {
   isLoggedIn: boolean;
   isAdmin: boolean;
   user: firebase.User;
+  reportList: boolean = false;
 
   constructor(private _authService: AuthService,
     private _firestore: AngularFirestore) {
@@ -42,6 +43,10 @@ export class NavBarComponent implements OnInit {
 
   closeDrawer() {
     this.drawer.close();
+  }
+
+  toggleReportList() {
+    this.reportList = !this.reportList;
   }
 
 }

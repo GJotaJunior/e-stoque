@@ -22,10 +22,21 @@
                 <span>Usuários</span>
             </mat-list-item>
             <mat-divider *ngIf="isAdmin"></mat-divider>
-            <mat-list-item [routerLink]="['']" *ngIf="isAdmin">
+            <mat-list-item *ngIf="isAdmin" (click)="toggleReportList()">
                 <mat-icon>show_chart</mat-icon>
                 <span>Relatórios</span>
             </mat-list-item>
+            <mat-list style="margin-left: 25px;" *ngIf="reportList">
+                <mat-list-item [routerLink]="['']">
+                    Vendas
+                </mat-list-item>
+                <mat-list-item [routerLink]="['']">
+                    Compras
+                </mat-list-item>
+                <mat-list-item [routerLink]="['']">
+                    Comparativos
+                </mat-list-item>
+            </mat-list>
             <mat-divider *ngIf="isAdmin"></mat-divider>
             <mat-list-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
