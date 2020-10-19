@@ -1,7 +1,7 @@
 <mat-drawer-container class="example-container" hasBackdrop="true" autosize>
     <mat-drawer #drawer mode="over">
         <mat-toolbar color="primary">
-            <button mat-icon-button class="example-icon" *ngIf="isLoggedIn == true" (click)="drawer.toggle()">
+            <button mat-icon-button class="example-icon" *ngIf="isLoggedIn == true">
                 <mat-icon>menu</mat-icon>
             </button>
             <span id="logo" [routerLink]="['']">E-Stoque</span>

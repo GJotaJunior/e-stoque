@@ -41,7 +41,7 @@ export class AuthService {
     setTimeout(() => {
       this._firestore.collection('users').doc(uid).valueChanges().subscribe(
         (userDoc) => {
-          if (!userDoc['isActive'] && userDoc != undefined) {
+          if (!userDoc || !userDoc['isActive']) {
             this.singOut();
             this._snackBar.open('A conta foi desativado por um administrador', 'X', { duration: 3000 })
           }

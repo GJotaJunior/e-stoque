@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'home',
     canActivate: [AngularFireAuthGuard],
-    component: RegisterComponent
+    redirectTo: '/transaction'
   },
   {
     path: 'login',
