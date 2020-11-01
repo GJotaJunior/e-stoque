@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Editar {{data.name}}</h1>
+<div class="component" fxLayout="row" fxLayoutAlign="space-around start">
+    <div fxLayout="row" fxLayoutAlign="center center" fxFlex="80" fxFlex.gt-sm="40">
+        <form [formGroup]="productEditForm" (ngSubmit)="saveProductEdited()" fxLayout="column" fxLayoutAlign="center">
+            <div mat-dialog-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Novo preço no balcão</mat-label>
+                    <input matInput placeholder="{{data.priceBar.toFixed(2).toString().replace('.', ',')}}" type="text"
+                        (keypress)="checkPrice($event)" (blur)="convertPrice()" formControlName="priceBar" required />
+                    <mat-error *ngIf="productEditForm.controls['priceBar'].invalid">{{getPriceBarFieldError()}}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Novo preço no delivery</mat-label>
+                    <input matInput placeholder="{{data.priceDelivery.toFixed(2).toString().replace('.', ',')}}"
+                        type="text" (keypress)="checkPrice($event)" (blur)="convertPrice()"
+                        formControlName="priceDelivery" required />
+                    <mat-error *ngIf="productEditForm.controls['priceDelivery'].invalid">
+                        {{getPriceDeliveryFieldError()}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions>
+                <button mat-button (click)="cancelEdit()">
+                    Cancelar
+                </button>
+                <button type="submit" [disabled]="!productEditForm.valid" mat-raised-button color="primary">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

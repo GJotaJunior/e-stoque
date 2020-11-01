@@ -1,0 +1,11 @@
+.component {
+    height: 100%;
+}
+
+mat-form-field {
+    margin-bottom: 1.3vh;
+}
+
+.mat-dialog-actions {
+    width: 300px;
+}

@@ -21,7 +21,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ProductsComponent } from './components/products/products.component';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
@@ -32,10 +32,12 @@ import { TransactionInComponent } from './components/transaction-in/transaction-
 import { TransactionOutComponent } from './components/transaction-out/transaction-out.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 import { ProductsRegisterComponent } from './components/products-register/products-register.component';
-
+import { ProductEditComponent } from './components/product-edit/product-edit.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ProductDeleteComponent } from './components/product-delete/product-delete.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { ProductsRegisterComponent } from './components/products-register/produc
     TransactionInComponent,
     TransactionOutComponent,
     ProductsListComponent,
-    ProductsRegisterComponent
+    ProductsRegisterComponent,
+    ProductEditComponent,
+    ProductDeleteComponent
   ],
   imports: [
     AppRoutingModule,
@@ -77,6 +81,7 @@ import { ProductsRegisterComponent } from './components/products-register/produc
     MatTabsModule,
     MatRadioModule,
     MatAutocompleteModule,
+    MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
