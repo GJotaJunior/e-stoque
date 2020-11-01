@@ -21,7 +21,8 @@ export class TransactionOutComponent implements OnInit {
     'name',
     'amount',
     'typeEnum',
-    'valueUnit'
+    'valueUnit',
+    'delete'
   ]
 
   data = [];
@@ -217,5 +218,15 @@ export class TransactionOutComponent implements OnInit {
     this.valueProducts += (amount * priceUnit);
 
     this._snackBar.open('Produto adicionado ao carrinho com sucesso!', 'X', { duration: 4000 });
+  }
+
+  removeOfCart(product: any) {
+    let index: number = this.data.indexOf(product);
+    this.data.splice(index, 1);
+
+    this.cart = new MatTableDataSource(this.data);
+    this.cart.sort = this.sort;
+
+    this._snackBar.open('Produto removido do carrinho com sucesso!', 'X', { duration: 4000 });
   }
 }
