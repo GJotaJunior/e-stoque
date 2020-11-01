@@ -221,6 +221,8 @@ export class TransactionOutComponent implements OnInit {
   }
 
   removeOfCart(product: any) {
+    this.valueProducts -= (product.amount * product.priceUnit);
+
     let index: number = this.data.indexOf(product);
     this.data.splice(index, 1);
 
