@@ -198,6 +198,27 @@ export class TransactionOutComponent implements OnInit {
     return this.products.filter(product => product.name.toLowerCase().includes(filterValue));
   }
 
+
+  // Update the cart when someone add or remove some item
+
+  updateAmount(name: string, amount: number, typeAmount: string) {
+    console.log(name)
+    console.log(amount)
+    console.log(typeAmount)
+
+    if (typeAmount == 'add')
+      for (let i = 0; i < this.products.length; i++) {
+        if (name == this.products[i].name)
+          this.products[i].amountStock -= amount;
+      }
+
+    else if (typeAmount == 'remove')
+      for (let i = 0; i < this.products.length; i++) {
+        if (name == this.products[i].name)
+          this.products[i].amountStock += amount;
+      }
+  }
+
   // Add a product into cart
 
   addInCart() {
@@ -217,9 +238,13 @@ export class TransactionOutComponent implements OnInit {
 
     this.valueProducts += (amount * priceUnit);
 
+    this.updateAmount(productName, amount, 'add');
     this._snackBar.open('Produto adicionado ao carrinho com sucesso!', 'X', { duration: 4000 });
   }
 
+
+  // Remove a product of cart
+  
   removeOfCart(product: any) {
     this.valueProducts -= (product.amount * product.priceUnit);
 
@@ -229,6 +254,7 @@ export class TransactionOutComponent implements OnInit {
     this.cart = new MatTableDataSource(this.data);
     this.cart.sort = this.sort;
 
+    this.updateAmount(product.productName, product.amount, 'remove');
     this._snackBar.open('Produto removido do carrinho com sucesso!', 'X', { duration: 4000 });
   }
 }
