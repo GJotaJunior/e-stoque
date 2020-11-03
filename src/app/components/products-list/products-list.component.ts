@@ -24,7 +24,7 @@ export class ProductsListComponent implements OnInit {
     'amountStock'
   ];
 
-  isAdminLogged: boolean = true;
+  isAdminLogged: boolean = false;
   products: IProduct[] = [];
   uids: string[] = [];
   dataSource: MatTableDataSource<IProduct> = new MatTableDataSource([]);
@@ -77,7 +77,6 @@ export class ProductsListComponent implements OnInit {
 
   edit(product: IProduct) {
     const dialogRef = this._dialog.open(ProductEditComponent, {
-      width: '500px',
       data: {
         uid: product.uid,
         name: product.name,
