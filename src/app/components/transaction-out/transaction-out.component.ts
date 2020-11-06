@@ -95,6 +95,7 @@ export class TransactionOutComponent implements OnInit {
     let productId: string = product.uid;
     let amount: number = productCart.amount;
     let typeEnum: string = productCart.typeEnum;
+    let salePrice: number = productCart.priceUnit;
     let dateHour: firestore.Timestamp = firestore.Timestamp.now();
     let seller: firestore.DocumentReference = this._firestore.collection('users').doc(this._authService.userDetails.uid).ref;
 
@@ -103,7 +104,7 @@ export class TransactionOutComponent implements OnInit {
     });
 
     this._firestore.collection(`products/${productId}/moves`).add({
-      amount, typeEnum, dateHour, seller
+      amount, typeEnum, salePrice, dateHour, seller
     }
     )
       .then(
