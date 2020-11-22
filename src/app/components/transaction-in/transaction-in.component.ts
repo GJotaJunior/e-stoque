@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../modules/auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { firestore } from 'firebase';
 import { IProduct } from '../../shared/interfaces/iproduct';
@@ -24,7 +25,8 @@ export class TransactionInComponent implements OnInit {
   _db: AngularFirestoreCollection<unknown>;
   filteredOptions: Observable<IProduct[]>;
 
-  constructor(private _firestore: AngularFirestore,
+  constructor(private _authService: AuthService,
+    private _firestore: AngularFirestore,
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar) {
 
@@ -66,13 +68,14 @@ export class TransactionInComponent implements OnInit {
     let price: number = Number.parseFloat((this.transactionForm.controls['price'].value).replace(',', '.'));
     let typeEnum: string = 'entrada';
     let dateHour: firestore.Timestamp = firestore.Timestamp.now();
+    let purchaser: firestore.DocumentReference = this._firestore.collection('users').doc(this._authService.userDetails.uid).ref;
 
     this._firestore.collection('products').doc(productId).update({
       amountStock: product.amountStock + amount
     });
 
     this._firestore.collection(`products/${productId}/moves`).add({
-      amount, price, typeEnum, dateHour
+      amount, price, typeEnum, dateHour, purchaser
     }
     )
       .then(

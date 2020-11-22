@@ -69,6 +69,13 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Preço(un.)</th>
                     <td mat-cell *matCellDef="let product">{{product.priceUnit.toFixed(2).toString().replace('.', ',')}}</td>
                 </ng-container>
+
+                <ng-container matColumnDef="delete" fxshow="false">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Remover do carrinho</th>
+                    <td mat-cell *matCellDef="let product">
+                            <mat-icon aria-hidden="false" aria-label="Deletar" (click)="removeOfCart(product)">delete</mat-icon>
+                    </td>
+                </ng-container>
     
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

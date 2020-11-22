@@ -30,4 +30,7 @@
     margin-right: 3rem;
     padding-top: 0.5rem;
   }
-  
+
+  mat-icon {
+    cursor: pointer;
+  }
